@@ -8,15 +8,22 @@ const Usertab = () => {
 
 
     const [users, setUsers] = useState([])
+    // const [waiting, setWaiting] = useState(false)
 
     useEffect(() => {
-        loadUsers();
+        // setWaiting(true)
+        setTimeout(() => {
+            loadUsers();
+
+        }, 10000);
     }, []);
 
     const loadUsers = async () => {
         const result = await axios.get("https://jsonplaceholder.typicode.com/users");
         console.log(result);
         setUsers(result.data.reverse());
+        //  setWaiting(false)
+
     };
 
     const deleteUser = async id => {
@@ -31,48 +38,54 @@ const Usertab = () => {
 
         <div className="container">
             <h1>Liste des utilisateurs</h1>
-            <table class="table border shadow">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">N</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">User Name</th>
-                        <th scope="col">Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user, index) => (
+
+            {!users.length ? <h3>waiting plz</h3> :
+
+
+
+                <table class="table border shadow">
+                    <thead class="thead-dark">
                         <tr>
-                            <th scope="row">{index + 1}</th>
-                            <td>{user.name}</td>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            <td>
-                                <Link class="btn btn-warning" to={`/posts/${index + 1}`}>
-                                    Voir user
+                            <th scope="col">N</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user, index) => (
+                            <tr>
+                                <th scope="row">{index + 1}</th>
+                                <td>{user.name}</td>
+                                <td>{user.username}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    <Link class="btn btn-warning" to={`/posts/${index + 1}`}>
+                                        Voir user
                   </Link>
-                                <Link
-                                    class="btn btn-outline-primary mr-2"
-                                    to={`/users/edit/${user.id}`}
-                                >
-                                    Modifier
+                                    <Link
+                                        class="btn btn-outline-primary mr-2"
+                                        to={`/users/edit/${user.id}`}
+                                    >
+                                        Modifier
                   </Link>
-                                <Link class="btn btn-primary mr-2" to={`/comments/${index + 1}`}>
-                                    Voir comments
+                                    <Link class="btn btn-primary mr-2" to={`/comments/${index + 1}`}>
+                                        Voir comments
                   </Link>
-                                <Link
-                                    class="btn btn-danger"
-                                    onClick={() => deleteUser(user.id)}
-                                >
-                                    Delete
+                                    <Link
+                                        class="btn btn-danger"
+                                        onClick={() => deleteUser(user.id)}
+                                    >
+                                        Delete
                   </Link>
 
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            }
         </div>
 
 
